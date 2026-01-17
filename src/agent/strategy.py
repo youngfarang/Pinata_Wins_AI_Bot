@@ -7,6 +7,9 @@ import random
 class BettingStrategy:
     """Base betting strategy for line bets."""
     
+    # Strategy configuration constants
+    RECENT_RESULTS_WINDOW = 5  # Number of recent bets to analyze for adjustments
+    
     def __init__(self, strategy_type: str = "conservative"):
         """
         Initialize betting strategy.
@@ -73,8 +76,8 @@ class BettingStrategy:
         bet_per_line = round(bet_per_line, 2)
         
         # Adjust based on recent performance
-        if len(bet_history) >= 5:
-            recent_results = bet_history[-5:]
+        if len(bet_history) >= self.RECENT_RESULTS_WINDOW:
+            recent_results = bet_history[-self.RECENT_RESULTS_WINDOW:]
             recent_wins = sum(1 for bet in recent_results if bet.get("result") == "win")
             
             # If on a losing streak, reduce bet
@@ -129,6 +132,9 @@ class MartingaleStrategy(BettingStrategy):
 class FibonacciStrategy(BettingStrategy):
     """Fibonacci betting strategy - follow Fibonacci sequence."""
     
+    # Strategy configuration constants
+    WIN_BACKTRACK_STEPS = 2  # Number of steps to move back in sequence on win
+    
     def __init__(self):
         """Initialize Fibonacci strategy."""
         super().__init__("conservative")
@@ -144,9 +150,9 @@ class FibonacciStrategy(BettingStrategy):
         # Move forward in sequence on loss
         if bet_history and bet_history[-1].get("result") == "loss":
             self.current_index = min(self.current_index + 1, len(self.fib_sequence) - 1)
-        # Move back two positions on win
+        # Move back on win
         elif bet_history and bet_history[-1].get("result") == "win":
-            self.current_index = max(self.current_index - 2, 0)
+            self.current_index = max(self.current_index - self.WIN_BACKTRACK_STEPS, 0)
         
         bet_per_line = self.base_bet * self.fib_sequence[self.current_index]
         

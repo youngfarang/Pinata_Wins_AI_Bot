@@ -99,7 +99,7 @@ class PaylineManager:
                     break
             
             # Check if we have a winning combination
-            symbol_info = self.SYMBOLS.get(first_symbol, {"min_match": 5})
+            symbol_info = self.SYMBOLS.get(first_symbol, {"value": 1, "min_match": 5})
             if match_count >= symbol_info["min_match"]:
                 multiplier = self.PAYOUT_MULTIPLIERS.get(match_count, 1)
                 symbol_value = symbol_info["value"]

@@ -34,10 +34,12 @@ class ConnectionManager:
         try:
             self.logger.info(f"Connecting to {self.server_url}...")
             
-            # Simulate connection (in real implementation, use websockets or requests)
+            # TODO: Implement actual WebSocket connection when server is available
+            # Example implementation:
             # import websockets
-            # self.websocket = await websockets.connect(self.server_url)
+            # self.websocket = await websockets.connect(self.server_url, headers={'Authorization': f'Bearer {auth_token}'})
             
+            # For now, simulate connection for offline testing
             self.connected = True
             self.session_id = f"session_{int(time.time())}"
             self.logger.info(f"Connected successfully. Session ID: {self.session_id}")
@@ -55,6 +57,7 @@ class ConnectionManager:
             self.logger.info("Disconnecting from server...")
             self.connected = False
             self.session_id = None
+            # TODO: Close WebSocket connection when implemented
             # await self.websocket.close()
     
     def send_message(self, message_type: str, data: Dict) -> bool:
@@ -81,6 +84,7 @@ class ConnectionManager:
             }
             
             self.logger.debug(f"Sending message: {message_type}")
+            # TODO: Send message via WebSocket when implemented
             # await self.websocket.send(json.dumps(message))
             
             return True
@@ -93,17 +97,22 @@ class ConnectionManager:
         """
         Receive a message from the server.
         
+        Note: This is a placeholder implementation. Returns None when no
+        actual WebSocket connection is established. When a server is available,
+        this will receive and parse real-time game results.
+        
         Returns:
-            Message dictionary or None
+            Message dictionary or None if not connected or no message available
         """
         if not self.connected:
             return None
         
         try:
+            # TODO: Implement actual WebSocket message receiving
             # response = await self.websocket.recv()
             # return json.loads(response)
             
-            # Placeholder for simulation
+            # Placeholder returns None (client will fallback to local simulation)
             return None
             
         except Exception as e:
