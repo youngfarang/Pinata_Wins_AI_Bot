@@ -98,10 +98,13 @@ class BettingStrategy:
 class MartingaleStrategy(BettingStrategy):
     """Martingale betting strategy - double bet after loss."""
     
+    # Strategy configuration constants
+    BASE_BET = 0.50  # Base betting amount
+    
     def __init__(self):
         """Initialize Martingale strategy."""
         super().__init__("moderate")
-        self.base_bet = 0.50
+        self.base_bet = self.BASE_BET
     
     def calculate_bet(self, balance: float, bet_history: List[Dict], 
                      game_state: Optional[Dict] = None) -> Dict:
@@ -134,11 +137,12 @@ class FibonacciStrategy(BettingStrategy):
     
     # Strategy configuration constants
     WIN_BACKTRACK_STEPS = 2  # Number of steps to move back in sequence on win
+    BASE_BET = 0.25  # Base betting amount
     
     def __init__(self):
         """Initialize Fibonacci strategy."""
         super().__init__("conservative")
-        self.base_bet = 0.25
+        self.base_bet = self.BASE_BET
         self.fib_sequence = [1, 1, 2, 3, 5, 8, 13, 21]
         self.current_index = 0
     
